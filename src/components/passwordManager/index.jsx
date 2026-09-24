@@ -1,5 +1,17 @@
-// passwordManager/index.jsx
+﻿// passwordManager/index.jsx
 import React, { useEffect, useMemo, useState } from "react";
+import {
+    FiCopy,
+    FiEdit2,
+    FiEye,
+    FiEyeOff,
+    FiFilePlus,
+    FiLink,
+    FiLock,
+    FiRefreshCw,
+    FiTrash2,
+    FiUser,
+} from "react-icons/fi";
 import { Styled } from "./styled";
 
 /** --------------------------------
@@ -11,7 +23,7 @@ const SESSION_UNLOCK = "passwordManager.unlocked"; // "true" | ""
 const uid = () => `${Date.now().toString(36)}${Math.random().toString(36).slice(2)}`;
 
 // very basic masking for display only
-const mask = (s = "") => (s ? "•".repeat(Math.min(Math.max(s.length, 8), 18)) : "");
+const mask = (s = "") => (s ? "*".repeat(Math.min(Math.max(s.length, 8), 18)) : "");
 
 // naive generator (UI convenience only; not cryptographically strong)
 const genPassword = (len = 16) => {
@@ -125,7 +137,6 @@ export default function PasswordManager() {
         setSite(""); setUsername(""); setPwd(""); setUrl(""); setTags(""); setNotes("");
     };
 
-    const startEdit = (id) => setEditing(id);
     const cancelEdit = () => setEditing(null);
     const saveEdit = (id, patch) => {
         setItems((prev) =>
@@ -182,7 +193,11 @@ export default function PasswordManager() {
         if (!confirm) return;
         const onKey = (e) => {
             if (e.key === "Escape") setConfirm(null);
-            if (e.key === "Enter") handleConfirm();
+            if (e.key === "Enter") {
+                const fn = confirm?.onConfirm;
+                setConfirm(null);
+                if (typeof fn === "function") fn();
+            }
         };
         document.addEventListener("keydown", onKey);
         return () => document.removeEventListener("keydown", onKey);
@@ -195,7 +210,7 @@ export default function PasswordManager() {
                     <Styled.Header>
                         <div>
                             <Styled.Title>Password Manager (Local)</Styled.Title>
-                            <Styled.Sub>Master Password UI only — no real encryption. Data stays in your browser.</Styled.Sub>
+                            <Styled.Sub>Master password is a UI-only gate. Your data stays in this browser.</Styled.Sub>
                         </div>
                     </Styled.Header>
 
@@ -212,7 +227,7 @@ export default function PasswordManager() {
                             <Styled.Button type="button" onClick={() => { setMaster(""); }}>Clear</Styled.Button>
                         </Styled.RowWrap>
                         <Styled.LockBanner>
-                            <div><strong>Important:</strong> This is a mini-project. The “master password” is only a visual gate and is <em>not</em> used for real encryption.</div>
+                            <div><strong>Important:</strong> This is a local demo. The master password is only a visual gate and is not used for real encryption.</div>
                             <div style={{ marginTop: 6 }}>
                                 For a production app, use <Styled.Mono>Web Crypto API</Styled.Mono> (PBKDF2/Argon2, AES-GCM) and never store secrets in plaintext.
                             </div>
@@ -233,7 +248,7 @@ export default function PasswordManager() {
                     </div>
                     <Styled.BadgeRow>
                         <Styled.Tag>Total: {items.length}</Styled.Tag>
-                        <Styled.Button onClick={lock} title="Lock the manager">🔒 Lock</Styled.Button>
+                        <Styled.Button onClick={lock} title="Lock the manager"><FiLock aria-hidden="true" /> Lock</Styled.Button>
                         <Styled.DangerButton onClick={clearAll} title="Clear all credentials">Clear All</Styled.DangerButton>
                     </Styled.BadgeRow>
                 </Styled.Header>
@@ -261,12 +276,8 @@ export default function PasswordManager() {
                             onChange={(e) => setPwd(e.target.value)}
                             style={{ flex: "1 1 220px" }}
                         />
-                        <Styled.IconButton type="button" onClick={() => setShowAddPwd((v) => !v)} title={showAddPwd ? "Hide password" : "Show password"}>
-                            {showAddPwd ? "🙈" : "👁️"}
-                        </Styled.IconButton>
-                        <Styled.IconButton type="button" onClick={() => setPwd(genPassword(16))} title="Generate strong password">
-                            ⚙️
-                        </Styled.IconButton>
+                        <Styled.IconButton type="button" onClick={() => setShowAddPwd((v) => !v)} title={showAddPwd ? "Hide password" : "Show password"}>{showAddPwd ? <FiEyeOff aria-hidden="true" /> : <FiEye aria-hidden="true" />}</Styled.IconButton>
+                        <Styled.IconButton type="button" onClick={() => setPwd(genPassword(16))} title="Generate strong password"><FiRefreshCw aria-hidden="true" /></Styled.IconButton>
                         <Styled.Input
                             type="url"
                             placeholder="Login URL (optional)"
@@ -285,7 +296,7 @@ export default function PasswordManager() {
                         </Styled.PrimaryButton>
                     </Styled.FormRow>
                     <Styled.TextArea
-                        placeholder="Notes (optional)…"
+                        placeholder="Notes (optional)..."
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}
                         style={{ marginTop: 10, width: "100%" }}
@@ -316,12 +327,12 @@ export default function PasswordManager() {
                         style={{ flex: "0 1 220px" }}
                     >
                         <option value="updated">Recently updated</option>
-                        <option value="site">Site A–Z</option>
-                        <option value="username">Username A–Z</option>
+                        <option value="site">Site A-Z</option>
+                        <option value="username">Username A-Z</option>
                     </Styled.Select>
 
                     <Styled.Input
-                        placeholder="Search site/username/url/tag…"
+                        placeholder="Search site, username, URL or tag..."
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         aria-label="Search"
@@ -353,45 +364,41 @@ export default function PasswordManager() {
                                         <Styled.ItemTitle>{it.site}</Styled.ItemTitle>
                                         <Styled.ItemMeta>
                                             {it.username ? <Styled.Tag>@{it.username}</Styled.Tag> : <Styled.Tag tone="muted">No username</Styled.Tag>}
-                                            <span>•</span>
+                                            <span aria-hidden="true">/</span>
                                             <Styled.Tag>{revealed ? (it.password || "") : mask(it.password)}</Styled.Tag>
                                             {it.url && (
                                                 <>
-                                                    <span>•</span>
+                                                    <span aria-hidden="true">/</span>
                                                     <a href={it.url} target="_blank" rel="noreferrer">{new URL(it.url).hostname || it.url}</a>
                                                 </>
                                             )}
                                             {(it.tags || []).length > 0 && (
                                                 <>
-                                                    <span>•</span>
+                                                    <span aria-hidden="true">/</span>
                                                     {(it.tags || []).map((t) => <Styled.Tag key={t}>#{t}</Styled.Tag>)}
                                                 </>
                                             )}
-                                            <span>•</span>
+                                            <span aria-hidden="true">/</span>
                                             <Styled.DueHint>Updated {new Date(it.updatedAt || it.createdAt).toLocaleString()}</Styled.DueHint>
                                         </Styled.ItemMeta>
                                     </div>
                                 </Styled.ItemLeft>
 
                                 <Styled.ItemRight>
-                                    <Styled.Button onClick={() => toggleReveal(it.id)} title={revealed ? "Hide password" : "Reveal password"}>
-                                        {revealed ? "🙈 Hide" : "👁️ Reveal"}
-                                    </Styled.Button>
-                                    <Styled.Button onClick={() => copy(it.password, "Password copied")} title="Copy password">📋 Copy</Styled.Button>
-                                    <Styled.IconButton onClick={() => copy(it.username, "Username copied")} title="Copy username">👤</Styled.IconButton>
-                                    <Styled.IconButton onClick={() => it.url && copy(it.url, "URL copied")} title="Copy URL">🔗</Styled.IconButton>
-                                    <Styled.IconButton onClick={() => duplicateItem(it.id)} title="Duplicate">📄</Styled.IconButton>
-                                    <Styled.IconButton onClick={() => setEditing(it.id)} title="Edit">✏️</Styled.IconButton>
-                                    <Styled.IconButton onClick={() => removeItem(it.id)} title="Delete">🗑️</Styled.IconButton>
+                                    <Styled.Button onClick={() => toggleReveal(it.id)} title={revealed ? "Hide password" : "Reveal password"}>{revealed ? <><FiEyeOff aria-hidden="true" /> Hide</> : <><FiEye aria-hidden="true" /> Reveal</>}</Styled.Button>
+                                    <Styled.Button onClick={() => copy(it.password, "Password copied")} title="Copy password"><FiCopy aria-hidden="true" /> Copy</Styled.Button>
+                                    <Styled.IconButton onClick={() => copy(it.username, "Username copied")} title="Copy username"><FiUser aria-hidden="true" /></Styled.IconButton>
+                                    <Styled.IconButton onClick={() => it.url && copy(it.url, "URL copied")} title="Copy URL"><FiLink aria-hidden="true" /></Styled.IconButton>
+                                    <Styled.IconButton onClick={() => duplicateItem(it.id)} title="Duplicate"><FiFilePlus aria-hidden="true" /></Styled.IconButton>
+                                    <Styled.IconButton onClick={() => setEditing(it.id)} title="Edit"><FiEdit2 aria-hidden="true" /></Styled.IconButton>
+                                    <Styled.IconButton onClick={() => removeItem(it.id)} title="Delete"><FiTrash2 aria-hidden="true" /></Styled.IconButton>
                                 </Styled.ItemRight>
                             </Styled.Item>
                         );
                     })}
                 </Styled.List>
 
-                <Styled.FooterNote>
-                    Note: This demo uses <b>LocalStorage</b> and a UI-only lock. It does not encrypt your data.
-                </Styled.FooterNote>
+                <Styled.FooterNote>Note: This demo uses <b>LocalStorage</b> and a UI-only lock. It does not encrypt your data.</Styled.FooterNote>
 
                 {/* Confirm Modal */}
                 {confirm && (
@@ -455,15 +462,13 @@ function EditRow({ item, onCancel, onSave }) {
                     <Styled.Input value={site} onChange={(e) => setSite(e.target.value)} placeholder="Site / App *" required style={{ flex: "2 1 280px" }} />
                     <Styled.Input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username or Email" style={{ flex: "1 1 220px" }} />
                     <Styled.Input type={showPwd ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" style={{ flex: "1 1 220px" }} />
-                    <Styled.IconButton type="button" onClick={() => setShowPwd((v) => !v)} title={showPwd ? "Hide password" : "Show password"}>
-                        {showPwd ? "🙈" : "👁️"}
-                    </Styled.IconButton>
-                    <Styled.IconButton type="button" onClick={() => setPassword(genPassword(16))} title="Generate strong password">⚙️</Styled.IconButton>
+                    <Styled.IconButton type="button" onClick={() => setShowPwd((v) => !v)} title={showPwd ? "Hide password" : "Show password"}>{showPwd ? <FiEyeOff aria-hidden="true" /> : <FiEye aria-hidden="true" />}</Styled.IconButton>
+                    <Styled.IconButton type="button" onClick={() => setPassword(genPassword(16))} title="Generate strong password"><FiRefreshCw aria-hidden="true" /></Styled.IconButton>
                     <Styled.Input type="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="Login URL" style={{ flex: "2 1 280px" }} />
                     <Styled.Input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="Tags (comma separated)" style={{ flex: "2 1 280px" }} />
                 </Styled.FormRow>
 
-                <Styled.TextArea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Notes (optional)…" />
+                <Styled.TextArea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Notes (optional)..." />
 
                 {/* Save/Cancel below inputs, right-aligned */}
                 <Styled.ButtonRow>

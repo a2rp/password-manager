@@ -1,377 +1,43 @@
-// passwordManager/styled.js
-import styled, { css } from "styled-components";
-
-const border = "1px solid hsl(0 0% 100% / 0.14)";
-const borderMuted = "1px solid hsl(0 0% 100% / 0.10)";
-const focusRing = "0 0 0 3px hsl(0 0% 100% / 0.15)";
+import styled from "styled-components";
 
 export const Styled = {
-    Page: styled.div`
-        min-height: 100dvh;
-    `,
-    Container: styled.div`
-        max-width: 980px;
-        margin: 0 auto;
-        padding: 32px 18px 56px;
-    `,
-    Header: styled.header`
-        display: flex;
-        justify-content: space-between;
-        gap: 16px;
-        align-items: end;
-        margin: 12px 0 18px;
-        flex-wrap: wrap;
-    `,
-    Title: styled.h1`
-        font-size: clamp(28px, 3.5vw, 40px);
-        line-height: 1.1;
-        margin: 0 0 6px;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        color: inherit;
-    `,
-    Sub: styled.p`
-        margin: 0;
-        color: inherit;
-        opacity: 0.75;
-        font-size: 14px;
-    `,
-    BadgeRow: styled.div`
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        flex-wrap: wrap;
-    `,
-    Tag: styled.span`
-        font-size: 12px;
-        padding: 6px 10px;
-        border-radius: 999px;
-        border: ${borderMuted};
-        color: inherit;
-        ${({ tone }) =>
-            tone === "muted" &&
-            css`
-                opacity: 0.7;
-            `}
-    `,
-    DueHint: styled.span`
-        margin-left: 6px;
-        font-size: 12px;
-        padding: 2px 8px;
-        border-radius: 999px;
-        border: ${borderMuted};
-    `,
-
-    Card: styled.div`
-        border-radius: 16px;
-        padding: 16px;
-        border: ${border};
-        background: transparent;
-    `,
-    FormRow: styled.div`
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        align-items: center;
-    `,
-    FilterBar: styled.div`
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        align-items: center;
-        margin: 16px 0 10px;
-        > * {
-            min-width: 0;
-        }
-    `,
-    ButtonRow: styled.div`
-        display: flex;
-        gap: 10px;
-        justify-content: flex-end;
-        flex-wrap: wrap;
-        margin-top: 8px;
-    `,
-    RowWrap: styled.div`
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-    `,
-
-    Input: styled.input`
-        background: transparent;
-        color: inherit;
-        border: ${border};
-        border-radius: 10px;
-        padding: 10px 12px;
-        font-size: 14px;
-        outline: none;
-        caret-color: currentColor;
-        min-width: 0;
-        width: 100%;
-        flex: 1 1 220px;
-        &::placeholder {
-            color: hsl(0 0% 100% / 0.35);
-        }
-        &:focus-visible {
-            box-shadow: ${focusRing};
-            border-color: hsl(0 0% 100% / 0.35);
-        }
-        &[type="number"]::-webkit-outer-spin-button,
-        &[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        &[type="number"] {
-            -moz-appearance: textfield;
-        }
-        &[type="password"],
-        &[type="url"],
-        &[type="text"] {
-            color-scheme: dark;
-        }
-    `,
-    Select: styled.select`
-        background: transparent;
-        color: inherit;
-        border: ${border};
-        border-radius: 10px;
-        padding: 10px 12px;
-        font-size: 14px;
-        outline: none;
-        min-width: 0;
-        width: 100%;
-        flex: 1 1 220px;
-        &:focus-visible {
-            box-shadow: ${focusRing};
-            border-color: hsl(0 0% 100% / 0.35);
-        }
-        option {
-            color: #000;
-        }
-    `,
-    TextArea: styled.textarea`
-        background: transparent;
-        color: inherit;
-        border: ${border};
-        border-radius: 12px;
-        padding: 10px 12px;
-        font-size: 14px;
-        min-height: 110px;
-        resize: vertical;
-        outline: none;
-        &::placeholder {
-            color: hsl(0 0% 100% / 0.35);
-        }
-        &:focus-visible {
-            box-shadow: ${focusRing};
-            border-color: hsl(0 0% 100% / 0.35);
-        }
-    `,
-    Helper: styled.div`
-        margin-top: 10px;
-        font-size: 12px;
-        opacity: 0.75;
-    `,
-
-    PrimaryButton: styled.button`
-        border: ${border};
-        background: transparent;
-        color: inherit;
-        padding: 10px 14px;
-        border-radius: 10px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: transform 0.05s ease;
-        white-space: nowrap;
-        max-width: max-content;
-        &:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        &:active {
-            transform: translateY(1px);
-        }
-        &:focus-visible {
-            box-shadow: ${focusRing};
-        }
-    `,
-    Button: styled.button`
-        border: ${border};
-        background: transparent;
-        color: inherit;
-        padding: 10px 14px;
-        border-radius: 10px;
-        cursor: pointer;
-        white-space: nowrap;
-        &:active {
-            transform: translateY(1px);
-        }
-        &:focus-visible {
-            box-shadow: ${focusRing};
-        }
-    `,
-    DangerButton: styled.button`
-        border: 1px solid hsl(0 70% 60% / 0.7);
-        background: transparent;
-        color: hsl(0 70% 70% / 0.9);
-        padding: 10px 14px;
-        border-radius: 10px;
-        cursor: pointer;
-        white-space: nowrap;
-        &:active {
-            transform: translateY(1px);
-        }
-        &:focus-visible {
-            box-shadow: 0 0 0 3px hsl(0 70% 60% / 0.25);
-        }
-    `,
-    IconButton: styled.button`
-        background: transparent;
-        border: ${border};
-        border-radius: 10px;
-        padding: 8px 10px;
-        cursor: pointer;
-        color: inherit;
-        &:active {
-            transform: translateY(1px);
-        }
-        &:focus-visible {
-            box-shadow: ${focusRing};
-        }
-    `,
-
-    List: styled.div`
-        display: grid;
-        gap: 10px;
-    `,
-    Empty: styled.div`
-        padding: 36px;
-        text-align: center;
-        opacity: 0.75;
-        border: ${border};
-        border-style: dashed;
-        border-radius: 16px;
-        background: transparent;
-    `,
-    Item: styled.div`
-        display: grid;
-        grid-template-columns: ${({ $edit }) => ($edit ? "1fr" : "1fr auto")};
-        gap: 12px;
-        align-items: start;
-        border: ${border};
-        background: transparent;
-        border-radius: 16px;
-        padding: 12px;
-    `,
-    ItemLeft: styled.div`
-        display: flex;
-        gap: 12px;
-        flex: 1;
-        flex-direction: column;
-    `,
-    ItemRight: styled.div`
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-    `,
-    ItemTitle: styled.div`
-        font-weight: 700;
-        line-height: 1.2;
-        color: inherit;
-    `,
-    ItemMeta: styled.div`
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        opacity: 0.85;
-        font-size: 13px;
-        margin-top: 4px;
-        flex-wrap: wrap;
-        a {
-            color: inherit;
-            text-decoration: underline;
-            text-underline-offset: 2px;
-        }
-    `,
-
-    Fieldset: styled.fieldset`
-        border: ${border};
-        border-radius: 12px;
-        padding: 12px;
-        margin: 2px 0 0;
-        background: transparent;
-    `,
-    Legend: styled.legend`
-        padding: 0 6px;
-        opacity: 0.9;
-        font-weight: 600;
-    `,
-
-    FooterNote: styled.p`
-        margin: 18px 0 0;
-        text-align: center;
-        opacity: 0.75;
-        font-size: 12px;
-    `,
-
-    /* Modal */
-    ModalOverlay: styled.div`
-        position: fixed;
-        inset: 0;
-        z-index: 999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: hsl(0 0% 100% / 0.03);
-        backdrop-filter: blur(3px);
-    `,
-    ModalCard: styled.div`
-        width: min(92vw, 520px);
-        border-radius: 16px;
-        padding: 16px;
-        border: ${border};
-        background: transparent;
-    `,
-    ModalTitle: styled.h3`
-        margin: 2px 0 8px;
-        font-size: 18px;
-        font-weight: 700;
-        color: inherit;
-    `,
-    ModalMessage: styled.p`
-        margin: 0 0 14px;
-        opacity: 0.85;
-        line-height: 1.5;
-    `,
-    ModalActions: styled.div`
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-        margin-top: 4px;
-    `,
-
-    /* Lock screen */
-    LockWrap: styled.div`
-        display: grid;
-        gap: 12px;
-        max-width: 520px;
-        margin: 40px auto 0;
-    `,
-    LockBanner: styled.div`
-        border: ${border};
-        border-radius: 16px;
-        padding: 12px;
-        opacity: 0.9;
-        font-size: 13px;
-    `,
-    Mono: styled.code`
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-            "Liberation Mono", "Courier New", monospace;
-        background: hsl(0 0% 100% / 0.06);
-        padding: 2px 6px;
-        border-radius: 8px;
-        border: ${borderMuted};
-    `,
+    Page: styled.div` min-height: 100dvh; `,
+    Container: styled.div` width: min(1120px, calc(100% - 32px)); margin: 0 auto; padding: 30px 0 28px; `,
+    Header: styled.header` display: flex; justify-content: space-between; gap: 18px; align-items: end; margin: 16px 0 20px; flex-wrap: wrap; `,
+    Title: styled.h1` margin: 0 0 6px; color: #f5f7fb; font-size: clamp(30px, 5vw, 48px); line-height: 1; font-weight: 700; letter-spacing: -0.02em; `,
+    Sub: styled.p` max-width: 680px; margin: 0; color: #8fa3bc; font-size: 13px; line-height: 1.6; `,
+    BadgeRow: styled.div` display: flex; gap: 8px; align-items: center; flex-wrap: wrap; `,
+    Tag: styled.span` display: inline-flex; align-items: center; min-height: 26px; padding: 4px 9px; border-radius: 999px; border: 1px solid rgba(142, 171, 205, 0.14); color: #b8cbe2; font-size: 12px; `,
+    DueHint: styled.span` margin-left: 4px; color: #7f93aa; font-size: 11px; `,
+    Card: styled.div` padding: 18px; border: 1px solid rgba(142, 171, 205, 0.22); border-radius: 18px; background: linear-gradient(135deg, rgba(15, 32, 54, 0.88), rgba(7, 16, 29, 0.88)); box-shadow: 0 18px 50px rgba(0, 0, 0, 0.16); `,
+    FormRow: styled.div` display: flex; flex-wrap: wrap; gap: 10px; align-items: center; `,
+    FilterBar: styled.div` display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 16px 0 12px; > * { min-width: 0; } `,
+    ButtonRow: styled.div` display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; margin-top: 10px; `,
+    RowWrap: styled.div` display: flex; gap: 10px; flex-wrap: wrap; `,
+    Input: styled.input` min-width: 0; width: 100%; flex: 1 1 220px; padding: 11px 12px; color: #e8f0fb; background: rgba(5, 10, 18, 0.55); border: 1px solid rgba(142, 171, 205, 0.22); border-radius: 10px; outline: none; caret-color: #79b8ff; transition: border-color 180ms ease, box-shadow 180ms ease; &::placeholder { color: #7186a0; } &:focus-visible { border-color: #79b8ff; box-shadow: 0 0 0 3px rgba(121, 184, 255, 0.18); } `,
+    Select: styled.select` min-width: 0; width: 100%; flex: 1 1 220px; padding: 11px 12px; color: #e8f0fb; background: #0b192b; border: 1px solid rgba(142, 171, 205, 0.22); border-radius: 10px; outline: none; transition: border-color 180ms ease, box-shadow 180ms ease; &:focus-visible { border-color: #79b8ff; box-shadow: 0 0 0 3px rgba(121, 184, 255, 0.18); } option { color: #08111e; background: #e8f0fb; } `,
+    TextArea: styled.textarea` min-height: 110px; width: 100%; padding: 11px 12px; color: #e8f0fb; background: rgba(5, 10, 18, 0.55); border: 1px solid rgba(142, 171, 205, 0.22); border-radius: 10px; outline: none; resize: vertical; transition: border-color 180ms ease, box-shadow 180ms ease; &::placeholder { color: #7186a0; } &:focus-visible { border-color: #79b8ff; box-shadow: 0 0 0 3px rgba(121, 184, 255, 0.18); } `,
+    Helper: styled.div` margin-top: 10px; color: #8fa3bc; font-size: 12px; `,
+    PrimaryButton: styled.button` padding: 10px 14px; color: #06101e; background: #79b8ff; border: 1px solid #79b8ff; border-radius: 10px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: color 180ms ease, background 180ms ease, box-shadow 180ms ease; &:hover, &:focus-visible { color: #f5f7fb; background: #123457; box-shadow: 0 0 20px rgba(64, 139, 220, 0.15); outline: none; } &:disabled { opacity: 0.45; cursor: not-allowed; } `,
+    Button: styled.button` padding: 10px 14px; color: #c5d4e5; background: transparent; border: 1px solid rgba(142, 171, 205, 0.22); border-radius: 10px; cursor: pointer; white-space: nowrap; transition: border-color 180ms ease, box-shadow 180ms ease, text-shadow 180ms ease; &:hover, &:focus-visible { border-color: rgba(121, 184, 255, 0.55); box-shadow: 0 0 20px rgba(64, 139, 220, 0.15); text-shadow: 0 0 12px rgba(121, 184, 255, 0.32); outline: none; } `,
+    DangerButton: styled.button` padding: 10px 14px; color: #ff9b9b; background: transparent; border: 1px solid rgba(255, 118, 118, 0.55); border-radius: 10px; cursor: pointer; white-space: nowrap; transition: color 180ms ease, border-color 180ms ease, box-shadow 180ms ease; &:hover, &:focus-visible { color: #ffd2d2; border-color: #ff9b9b; box-shadow: 0 0 18px rgba(255, 118, 118, 0.15); outline: none; } `,
+    IconButton: styled.button` display: inline-grid; place-items: center; min-width: 40px; min-height: 40px; padding: 8px 10px; color: #c5d4e5; background: transparent; border: 1px solid rgba(142, 171, 205, 0.22); border-radius: 10px; cursor: pointer; transition: border-color 180ms ease, box-shadow 180ms ease, text-shadow 180ms ease; &:hover, &:focus-visible { border-color: rgba(121, 184, 255, 0.55); box-shadow: 0 0 20px rgba(64, 139, 220, 0.15); text-shadow: 0 0 12px rgba(121, 184, 255, 0.32); outline: none; } svg { width: 17px; height: 17px; } `,
+    List: styled.div` display: grid; gap: 10px; `,
+    Empty: styled.div` padding: 42px 20px; color: #8fa3bc; text-align: center; border: 1px dashed rgba(142, 171, 205, 0.3); border-radius: 16px; background: rgba(15, 32, 54, 0.4); `,
+    Item: styled.div` display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: start; padding: 14px; color: #d8e4f2; border: 1px solid rgba(142, 171, 205, 0.22); border-radius: 16px; background: rgba(9, 20, 35, 0.82); transition: border-color 180ms ease, box-shadow 180ms ease; &:hover { border-color: rgba(121, 184, 255, 0.55); box-shadow: 0 0 20px rgba(64, 139, 220, 0.15); } @media (max-width: 820px) { grid-template-columns: 1fr; } `,
+    ItemLeft: styled.div` display: flex; gap: 12px; flex: 1; flex-direction: column; min-width: 0; `,
+    ItemRight: styled.div` display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: flex-end; `,
+    ItemTitle: styled.div` color: #f5f7fb; font-weight: 700; line-height: 1.2; font-size: 16px; `,
+    ItemMeta: styled.div` display: flex; gap: 7px; align-items: center; margin-top: 8px; color: #8fa3bc; font-size: 12px; flex-wrap: wrap; a { color: #9dc8f5; text-decoration: none; &:hover { text-decoration: underline; } } `,
+    Fieldset: styled.fieldset` border: 1px solid rgba(142, 171, 205, 0.22); border-radius: 12px; padding: 12px; margin: 2px 0 0; `,
+    Legend: styled.legend` padding: 0 6px; color: #aec4de; font-weight: 600; `,
+    FooterNote: styled.p` margin: 18px 0 0; color: #7186a0; text-align: center; font-size: 12px; `,
+    ModalOverlay: styled.div` position: fixed; inset: 0; z-index: 999; display: flex; align-items: center; justify-content: center; padding: 18px; background: rgba(1, 7, 14, 0.74); backdrop-filter: blur(6px); `,
+    ModalCard: styled.div` width: min(92vw, 520px); padding: 20px; color: #d8e4f2; border: 1px solid rgba(142, 171, 205, 0.22); border-radius: 16px; background: #0b192b; box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4); `,
+    ModalTitle: styled.h3` margin: 2px 0 8px; color: #f5f7fb; font-size: 20px; `,
+    ModalMessage: styled.p` margin: 0 0 14px; color: #8fa3bc; line-height: 1.5; `,
+    ModalActions: styled.div` display: flex; justify-content: flex-end; gap: 10px; margin-top: 4px; `,
+    LockWrap: styled.form` display: grid; gap: 12px; width: min(100%, 560px); margin: 44px auto 0; padding: 24px; border: 1px solid rgba(142, 171, 205, 0.22); border-radius: 18px; background: linear-gradient(135deg, rgba(15, 32, 54, 0.9), rgba(7, 16, 29, 0.9)); box-shadow: 0 22px 60px rgba(0, 0, 0, 0.2); `,
+    LockBanner: styled.div` padding: 14px; color: #9eb3ca; border: 1px solid rgba(142, 171, 205, 0.14); border-radius: 12px; font-size: 12px; line-height: 1.6; `,
+    Mono: styled.code` padding: 2px 6px; color: #c7e0ff; background: rgba(121, 184, 255, 0.1); border: 1px solid rgba(142, 171, 205, 0.14); border-radius: 6px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; `,
 };
